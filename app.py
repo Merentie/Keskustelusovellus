@@ -16,10 +16,12 @@ db = SQLAlchemy(app)
 def index():
     return render_template("index.html")
 
+#Registration page
 @app.route("/register")
 def register():
     return render_template("register.html")
 
+#Handling of the registration, adding user to database unless the username is there already. Also logs the new user in if registration is successful. 
 @app.route("/registration",methods=["POST"])
 def registration():
     username = request.form["username"]
@@ -36,7 +38,8 @@ def registration():
         return redirect("/")
     else:
         return redirect("/testi")
-    
+
+#Handling of the attempted log in. It will be successful if the username and hashed passwords are in the same relation in the users table
 @app.route("/login",methods=["POST"])
 def login():
     username = request.form["username"]
@@ -44,19 +47,20 @@ def login():
     sql = text("SELECT id, password, username FROM users WHERE username=:username")
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()  
-    print(user)
     hash_value = user[1]
     if check_password_hash(hash_value, password):
         session["username"] = username
         return redirect("/")
     else:
         return redirect("/testi")
-
+    
+#Uloskirjautumisen käsittely
 @app.route("/logout")
 def logout():
     del session["username"]
     return redirect("/")
 
+#Testaa virheitä atm
 @app.route("/testi")
 def testi():
     return render_template("testi.html")

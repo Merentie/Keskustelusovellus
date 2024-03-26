@@ -1,0 +1,22 @@
+<title>Echo Chamber</title>
+{% if session.username %}
+<h1>Echo Chamber</h1>
+
+<form action="/createchamber">
+    <input type="submit" value="Create a new chamber">
+</form>
+
+<p>Olet kirjautunut nimellä {{ session.username }}</p>
+<a href="/logout">Log out</a>
+{% else %}
+<h1>Echo Chamber</h1>
+<form action="/login" method="POST">
+<p>Tunnus:<br>
+<input type="text" name="username" minlength="1" maxlength="16"></p>
+<p>Salasana:<br>
+<input type="password" name="password" minlength="1" maxlength="16"></p>
+<input type="submit" value="Log in">
+</form>
+<a href="/register">Register</a>
+{% endif %}
+

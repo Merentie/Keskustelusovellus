@@ -65,5 +65,9 @@ def logout():
 def testi():
     return render_template("testi.html")
 
+@app.route("/createchamber")
+def createchamber():
+    return render_template("createchamber.html")
+
 if __name__ == "__main__":
     app.run(debug=True)

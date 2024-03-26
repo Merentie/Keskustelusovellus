@@ -1,6 +1,11 @@
 <title>Echo Chamber</title>
 {% if session.username %}
 <h1>Echo Chamber</h1>
+
+<form action="/createchamber">
+    <input type="submit" value="Create a new chamber">
+</form>
+
 <p>Olet kirjautunut nimellä {{ session.username }}</p>
 <a href="/logout">Log out</a>
 {% else %}

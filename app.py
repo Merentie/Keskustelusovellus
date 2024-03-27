@@ -37,7 +37,7 @@ def registration():
         session["username"] = username
         return redirect("/")
     else:
-        return redirect("/testi")
+        return render_template("error.html", message="User already exists", prev="/register")
 
 #Handling of the attempted log in. It will be successful if the username and hashed passwords are in the same relation in the users table
 @app.route("/login",methods=["POST"])
@@ -46,28 +46,31 @@ def login():
     password = request.form["password"]
     sql = text("SELECT id, password, username FROM users WHERE username=:username")
     result = db.session.execute(sql, {"username":username})
-    user = result.fetchone()  
-    hash_value = user[1]
-    if check_password_hash(hash_value, password):
-        session["username"] = username
-        return redirect("/")
+    user = result.fetchone()
+    if user:
+        hash_value = user[1]
+        if check_password_hash(hash_value, password):
+            session["username"] = username
+            return redirect("/")
+        else:
+            return render_template("error.html", message="Wrong password", prev="/")
     else:
-        return redirect("/testi")
-    
-#Uloskirjautumisen käsittely
+        return render_template("error.html", message="User not found", prev="/")
+
+#Logs the user out
 @app.route("/logout")
 def logout():
     del session["username"]
     return redirect("/")
 
-#Testaa virheitä atm
-@app.route("/testi")
-def testi():
-    return render_template("testi.html")
-
+#Allows user to make a new chamber
 @app.route("/createchamber")
 def createchamber():
     return render_template("createchamber.html")
+
+@app.route("/createthread")
+def createthread():
+    pass
 
 if __name__ == "__main__":
     app.run(debug=True)

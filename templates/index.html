@@ -10,10 +10,11 @@
 <a href="/logout">Log out</a>
 {% else %}
 <h1>Echo Chamber</h1>
+<h4>Log in</h4>
 <form action="/login" method="POST">
-<p>Tunnus:<br>
+<p>Username:<br>
 <input type="text" name="username" minlength="1" maxlength="16"></p>
-<p>Salasana:<br>
+<p>Password:<br>
 <input type="password" name="password" minlength="1" maxlength="16"></p>
 <input type="submit" value="Log in">
 </form>

@@ -14,7 +14,9 @@ db = SQLAlchemy(app)
 #Frontpage
 @app.route("/")
 def index():
-    return render_template("index.html")
+    result = db.session.execute(text("SELECT name FROM chambers"))
+    chambers = result.fetchall()
+    return render_template("index.html", chambers=chambers)
 
 #Registration page
 @app.route("/register")
@@ -57,6 +59,7 @@ def login():
     else:
         return render_template("error.html", message="User not found", prev="/")
 
+
 #Logs the user out
 @app.route("/logout")
 def logout():
@@ -64,9 +67,22 @@ def logout():
     return redirect("/")
 
 #Allows user to make a new chamber
-@app.route("/createchamber")
+@app.route("/createchamber", methods=["GET","POST"])
 def createchamber():
-    return render_template("createchamber.html")
+    if request.method == "POST":
+        name = request.form["name"]
+        sql = text("SELECT name FROM chambers WHERE name=:name")
+        result = db.session.execute(sql, {"name":name})
+        chamber = result.fetchone()
+        if not chamber:
+            sql = text("INSERT INTO chambers (name) VALUES (:name)")
+            db.session.execute(sql, {"name":name})
+            db.session.commit()
+            return redirect("/")
+        else:
+            return render_template("error.html", message="Chamber already exists", prev="/createchamber")
+    else:
+        return render_template("createchamber.html")
 
 @app.route("/createthread")
 def createthread():

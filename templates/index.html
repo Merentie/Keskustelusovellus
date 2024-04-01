@@ -5,10 +5,16 @@
 <form action="/createchamber">
     <input type="submit" value="Create a new chamber">
 </form>
-
 <p>Olet kirjautunut nimellä {{ session.username }}</p>
 <a href="/logout">Log out</a>
+<hr>
+{% for chamber in chambers %}
+{{chamber.name}}
+<hr>
+{% endfor %}
+
 {% else %}
+
 <h1>Echo Chamber</h1>
 <h4>Log in</h4>
 <form action="/login" method="POST">

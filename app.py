@@ -14,32 +14,33 @@ db = SQLAlchemy(app)
 #Frontpage
 @app.route("/")
 def index():
-    result = db.session.execute(text("SELECT name FROM chambers"))
+    result = db.session.execute(text("SELECT id, name FROM chambers"))
     chambers = result.fetchall()
     return render_template("index.html", chambers=chambers)
 
-#Registration page
-@app.route("/register")
-def register():
-    return render_template("register.html")
 
-#Handling of the registration, adding user to database unless the username is there already. Also logs the new user in if registration is successful. 
-@app.route("/registration",methods=["POST"])
-def registration():
-    username = request.form["username"]
-    password = request.form["password"]
-    hash_value = generate_password_hash(password)
-    sql = text("SELECT id, username FROM users WHERE username=:username")
-    result = db.session.execute(sql, {"username":username})
-    user = result.fetchone()
-    if not user:
-        sql = text("INSERT INTO users (username, password) VALUES (:username, :password)")
-        db.session.execute(sql, {"username":username, "password":hash_value})
-        db.session.commit()
-        session["username"] = username
-        return redirect("/")
+#Registration page, handles the registration, adding user to database unless the username is there already. Also logs the new user in if registration is successful. 
+@app.route("/register",methods=["GET","POST"])
+def register():
+    if request.method == "GET":
+        return render_template("register.html")
     else:
-        return render_template("error.html", message="User already exists", prev="/register")
+        username = request.form["username"]
+        password = request.form["password"]
+        hash_value = generate_password_hash(password)
+        sql = text("SELECT id, username FROM users WHERE username=:username")
+        result = db.session.execute(sql, {"username":username})
+        user = result.fetchone()
+        if not user:
+            sql = text("INSERT INTO users (username, password) VALUES (:username, :password)")
+            db.session.execute(sql, {"username":username, "password":hash_value})
+            db.session.commit()
+            session["username"] = username
+            return redirect("/")
+        else:
+            return render_template("error.html", message="User already exists", prev="/register")
+
+
 
 #Handling of the attempted log in. It will be successful if the username and hashed passwords are in the same relation in the users table
 @app.route("/login",methods=["POST"])

@@ -8,10 +8,13 @@
 <p>Olet kirjautunut nimellä {{ session.username }}</p>
 <a href="/logout">Log out</a>
 <hr>
-{% for chamber in chambers %}
-{{chamber.name}}
+
+{% for name, link in chamberlinks.items() %}
+
+<a href="{{link}}">{{name}}</a>
 <hr>
 {% endfor %}
+
 
 {% else %}
 

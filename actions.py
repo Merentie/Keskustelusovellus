@@ -15,7 +15,7 @@ def createchamber(name):
         return False
 
 def createthread(uid, cid, title, content):
-    sql = text("INSERT INTO threads (user_id, chamber_id, title, content) VALUES (:uid, :cid, :title, :content)")
+    sql = text("INSERT INTO threads (user_id, chamber_id, title, content, echo, created_at) VALUES (:user_id, :chamber_id, :title, :content, 0, NOW())")
     db.session.execute(sql, {"user_id":uid, "chamber_id":cid, "title":title, "content":content})
     db.session.commit()
     return db.session.execute(text("SELECT currval(pg_get_serial_sequence('threads','id'))")).fetchone()
@@ -31,6 +31,17 @@ def getchambers():
     get = db.session.execute(text("SELECT name FROM chambers")).fetchall()
     return get
 
-def getthreads():
-    get = db.session.execute(text("SELECT * FROM threads")).fetchall()
+def getthreads(chamber):
+    chamber = chamber.replace("_"," ")
+    id = db.session.execute(text("SELECT id FROM chambers WHERE name=:name"),{"name":chamber}).fetchone()
+    if not id:
+        return 
+    id = id[0]
+    get = db.session.execute(text("SELECT * FROM threads WHERE chamber_id=:chamber_id"),{"chamber_id":id}).fetchall()
+    return get
+
+def thread(id):
+    get = db.session.execute(text("SELECT * FROM messages where thread_id=:thread_id"),{"thread_id":id}).fetchall()
+    if not get:
+        return
     return get

@@ -3,6 +3,7 @@ from flask import redirect, render_template, request, session
 import actions
 import userstuff
 
+
 #Frontpage
 @app.route("/")
 def index():
@@ -63,13 +64,13 @@ def chamber(chamber):
     if not actions.chambercheck(chamber):
         return render_template("error.html", message=f"chamber '{chamber}' not found", prev="/")
     else:
-        threads = actions.getthreads()
+        threads = actions.getthreads(chamber)
         links = {}
-        for thread in threads:
-            links[thread[3]] = str("/c/"+thread[3]).replace(" ","_")
+        if threads:
+            for thread in threads:
+                links[thread[3]] = str("/c/"+thread[3]).replace(" ","_")
         return render_template("chamber.html", threadlinks = links, creator = "/c/"+chamber+"/createthread")
 
-    
 @app.route("/c/<chamber>/createthread", methods=["GET","POST"])
 def createthread(chamber):
     if request.method == "POST":
@@ -78,12 +79,18 @@ def createthread(chamber):
         chamberid = actions.chambercheck(chamber)[0]
         title = request.form["title"]
         content = request.form["content"]
-        print(session["username"])
         user = userstuff.findadude(session["username"])
         userid = user[0]
         username = user[1]
         thread = actions.createthread(userid, chamberid, title, content)
+        return redirect(f"/c/{chamber}/{thread[0]}")
         return render_template("thread.html", createdby = username, threadid = thread)
-
     else:
         return render_template("createthread.html", where = "/c/"+chamber+"/createthread")
+    
+@app.route("/c/<chamber>/<thread>")
+def thread(chamber, thread):
+    
+    return render_template("thread.html")
+
+    

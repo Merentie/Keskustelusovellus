@@ -1,4 +1,6 @@
 <title>Echo Chamber</title>
+
+<link rel="icon" type="image/x-icon" href="/static/favicon.ico">
 {% if session.username %}
 <h1>Echo Chamber</h1>
 
@@ -11,7 +13,7 @@
 
 {% for name, link in chamberlinks.items() %}
 
-<a href="{{link}}">{{name}}</a>
+<a href="{{link}}"><h3>{{name}}</h3></a>
 <hr>
 {% endfor %}
 

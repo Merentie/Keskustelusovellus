@@ -23,7 +23,7 @@ CREATE TABLE messages (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
     thread_id INTEGER,
-    messages TEXT,
+    message TEXT,
     echo INTEGER,
     created_at TIMESTAMP
 );

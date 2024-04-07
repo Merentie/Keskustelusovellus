@@ -98,7 +98,7 @@ def thread(chamber, thread):
         thread = actions.openthread(thread)[0]
         thread = [userstuff.findadudebyid(thread[0]),thread[3],thread[4],thread[5],thread[6].strftime("%Y-%m-%d %H:%M:%S")]
         if not rawmessages:
-                return render_template("thread.html", back = chamber)
+                return render_template("thread.html", thread = thread, back = chamber)
         messages = []
         for message in rawmessages:
             dude = userstuff.findadudebyid(message[1])

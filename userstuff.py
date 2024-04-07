@@ -37,3 +37,12 @@ def findadude(username):
         return user
     else:
         return None
+
+def findadudebyid(id):
+    sql = text("SELECT id, username FROM users WHERE id=:id")
+    result = db.session.execute(sql, {"id":id})
+    user = result.fetchone()
+    if user:
+        return user
+    else:
+        return None

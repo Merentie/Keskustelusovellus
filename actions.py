@@ -40,8 +40,18 @@ def getthreads(chamber):
     get = db.session.execute(text("SELECT * FROM threads WHERE chamber_id=:chamber_id"),{"chamber_id":id}).fetchall()
     return get
 
-def thread(id):
+def openthread(id):
+    get = db.session.execute(text("SELECT * FROM threads WHERE id=:id"),{"id":id}).fetchall()
+    if not get:
+        return
+    return get
+
+def getmessages(id):
     get = db.session.execute(text("SELECT * FROM messages where thread_id=:thread_id"),{"thread_id":id}).fetchall()
     if not get:
         return
     return get
+
+def addamessage(uid, tid, message):
+    db.session.execute(text("INSERT INTO messages (user_id, thread_id, message, echo, created_at) VALUES (:user_id, :thread_id, :message, 0, NOW())"), {"user_id":uid, "thread_id":tid, "message":message})
+    db.session.commit()

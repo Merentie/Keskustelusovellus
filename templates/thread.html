@@ -1,1 +1,33 @@
-test
+<a href="/c/{{back}}" ><h1>{{back}}</h1> </a>
+<h3>{{thread.1}}</h3>
+
+{{thread.2}}
+<br>
+<br>
+Posted by {{thread.1.1}}
+<br>
+Posted at {{thread.4}}
+
+<hr>
+{%for message in messages%}
+
+{{message.1}}
+<br>
+<br>
+{{message.0}}
+<br>
+<br>
+{{message.2}} echo
+<br>
+Posted at {{message.3}}
+<hr>
+
+
+<br>
+{%endfor%}
+
+<form action="{{where}}" method="POST">
+    <h3>Post a message:</h3> <br>
+    <textarea name="message" cols="30" rows="10"></textarea><br><br>
+    <input type="submit" value="Submit">
+</form>

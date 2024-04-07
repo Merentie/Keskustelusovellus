@@ -2,7 +2,7 @@ from app import app
 from flask import redirect, render_template, request, session 
 import actions
 import userstuff
-
+from datetime import datetime
 
 #Frontpage
 @app.route("/")
@@ -68,7 +68,7 @@ def chamber(chamber):
         links = {}
         if threads:
             for thread in threads:
-                links[thread[3]] = str("/c/"+thread[3]).replace(" ","_")
+                links[thread[3]] = str("/c/"+chamber+"/"+str(thread[0])).replace(" ","_")
         return render_template("chamber.html", threadlinks = links, creator = "/c/"+chamber+"/createthread")
 
 @app.route("/c/<chamber>/createthread", methods=["GET","POST"])
@@ -84,13 +84,25 @@ def createthread(chamber):
         username = user[1]
         thread = actions.createthread(userid, chamberid, title, content)
         return redirect(f"/c/{chamber}/{thread[0]}")
-        return render_template("thread.html", createdby = username, threadid = thread)
     else:
         return render_template("createthread.html", where = "/c/"+chamber+"/createthread")
     
-@app.route("/c/<chamber>/<thread>")
+@app.route("/c/<chamber>/<thread>", methods=["GET","POST"])
 def thread(chamber, thread):
-    
-    return render_template("thread.html")
+    if request.method == "POST":
+        user = userstuff.findadude(session["username"])
+        actions.addamessage(user[0],thread,request.form["message"])
+        return redirect(f"/c/{chamber}/{thread}")
+    else:
+        rawmessages = actions.getmessages(thread)
+        thread = actions.openthread(thread)[0]
+        thread = [userstuff.findadudebyid(thread[0]),thread[3],thread[4],thread[5],thread[6].strftime("%Y-%m-%d %H:%M:%S")]
+        if not rawmessages:
+                return render_template("thread.html", back = chamber)
+        messages = []
+        for message in rawmessages:
+            dude = userstuff.findadudebyid(message[1])
+            date = message[5].strftime("%Y-%m-%d %H:%M:%S")
+            messages.append([message[3],dude[1],message[4],date])
+        return render_template("thread.html", thread = thread, back = chamber, messages=messages, where = "/c/"+chamber+"/"+str(thread))
 
-    

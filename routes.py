@@ -95,14 +95,14 @@ def thread(chamber, thread):
         return redirect(f"/c/{chamber}/{thread}")
     else:
         rawmessages = actions.getmessages(thread)
-        thread = actions.openthread(thread)[0]
-        thread = [userstuff.findadudebyid(thread[0]),thread[3],thread[4],thread[5],thread[6].strftime("%Y-%m-%d %H:%M:%S")]
+        thready = actions.openthread(thread)[0]
+        thready = [userstuff.findadudebyid(thready[0]),thready[3],thready[4],thready[5],thready[6].strftime("%Y-%m-%d %H:%M:%S")]
         if not rawmessages:
-                return render_template("thread.html", thread = thread, back = chamber)
+                return render_template("thread.html", thready = thready, back = chamber)
         messages = []
         for message in rawmessages:
             dude = userstuff.findadudebyid(message[1])
             date = message[5].strftime("%Y-%m-%d %H:%M:%S")
             messages.append([message[3],dude[1],message[4],date])
-        return render_template("thread.html", thread = thread, back = chamber, messages=messages, where = "/c/"+chamber+"/"+str(thread))
+        return render_template("thread.html", thready = thready, back = chamber, messages=messages, where = "/c/"+chamber+"/"+str(thread))
 

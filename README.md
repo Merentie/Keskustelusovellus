@@ -15,11 +15,11 @@ Seuraavaksi aktivoi virtuaaliympäristö ja asenna sovelluksen riippuvuudet kome
 - source venv/bin/activate
 - pip install -r ./requirements.txt
 
-Määritä vielä tietokannan skeema komennolla 
-- psql < schema.sql
-
 Käynnistä tietokanta komennolla
 - start-pg.sh
+
+Määritä vielä tietokannan skeema komennolla 
+- psql < schema.sql
 
 Nyt voit käynnistää sovelluksen komennolla 
 - flask run

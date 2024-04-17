@@ -3,3 +3,6 @@
     <input type="text" name="name"></p>
     <input type="submit" value="Submit">
 </form>
+{% if error %}
+<p class=error><span style="color:red">{{ error }}</span>
+{% endif %}

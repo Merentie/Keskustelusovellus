@@ -52,6 +52,12 @@ def getmessages(id):
         return
     return get
 
+def messagehistory(id):
+    get = db.session.execute(text("SELECT * FROM messages where user_id=:user_id"),{"user_id":id}).fetchall()
+    if not get:
+        return
+    return get
+
 def addamessage(uid, tid, message):
     db.session.execute(text("INSERT INTO messages (user_id, thread_id, message, echo, created_at) VALUES (:user_id, :thread_id, :message, 0, NOW())"), {"user_id":uid, "thread_id":tid, "message":message})
     db.session.commit()

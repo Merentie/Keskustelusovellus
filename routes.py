@@ -16,7 +16,7 @@ def index():
 #Registration page, handles the registration, adding user to database unless the username is there already. Also logs the new user in if registration is successful. 
 @app.route("/register",methods=["GET","POST"])
 def register():
-    if session["username"]:
+    if session:
             return redirect("/")
     if request.method == "GET":
         
@@ -35,11 +35,10 @@ def register():
 #Handling of the attempted log in. It will be successful if the username and hashed passwords are in the same relation in the users table
 @app.route("/login",methods=["POST"])
 def login():
-    try:
-        if session["username"]:
-            return redirect("/")
-    except:
-        pass
+    
+    if session:
+        return redirect("/")
+
     username = request.form["username"]
     password = request.form["password"]
     user = userstuff.login(username,password)
@@ -58,6 +57,8 @@ def logout():
 #Allows user to make a new chamber
 @app.route("/createchamber", methods=["GET","POST"])
 def createchamber():
+    if not session:
+        return redirect("/")
     if request.method == "POST":
         name = request.form["name"]
         chamber = actions.createchamber(name)
@@ -70,6 +71,8 @@ def createchamber():
     
 @app.route("/c/<chamber>/")
 def chamber(chamber):
+    if not session:
+        return redirect("/")
     if not actions.chambercheck(chamber):
         return render_template("error.html", message=f"chamber '{chamber}' not found", prev="/")
     else:
@@ -82,6 +85,8 @@ def chamber(chamber):
 
 @app.route("/c/<chamber>/createthread", methods=["GET","POST"])
 def createthread(chamber):
+    if not session:
+        return redirect("/")
     if request.method == "POST":
         if not actions.chambercheck(chamber):
             return render_template("error.html", message=f"chamber '{chamber}' not found", prev="/")
@@ -98,6 +103,8 @@ def createthread(chamber):
     
 @app.route("/c/<chamber>/<thread>", methods=["GET","POST"])
 def thread(chamber, thread):
+    if not session:
+        return redirect("/")
     if request.method == "POST":
         user = userstuff.findadude(session["username"])
         actions.addamessage(user[0],thread,request.form["message"])
@@ -114,4 +121,8 @@ def thread(chamber, thread):
             date = message[5].strftime("%Y-%m-%d %H:%M:%S")
             messages.append([message[3],dude[1],message[4],date])
         return render_template("thread.html", thready = thready, back = chamber, messages=messages, where = "/c/"+chamber+"/"+str(thread))
-
+    
+@app.route("/p/<id>")
+def profile(id):
+        if not session:
+            return redirect("/")

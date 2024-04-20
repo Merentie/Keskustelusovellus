@@ -99,7 +99,7 @@ def createthread(chamber):
         thread = actions.createthread(userid, chamberid, title, content)
         return redirect(f"/c/{chamber}/{thread[0]}")
     else:
-        return render_template("createthread.html", where = "/c/"+chamber+"/createthread")
+        return render_template("createthread.html", where = "/c/"+chamber+"/createthread", back = [chamber.replace("_"," "), "/c/"+chamber])
     
 @app.route("/c/<chamber>/<thread>", methods=["GET","POST"])
 def thread(chamber, thread):

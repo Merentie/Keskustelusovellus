@@ -1,7 +1,12 @@
-<h1>{{user}}</h1>
+<a href="/" ><h1>Echo Chamber</h1> </a>
+<h2>{{user.1}}</h2>
+<h4>Echo: {{echo}}</h4>
 {%for message in messages%}
-{{message.1.0.1}}
+
+<a href="/c/{{message.4}}/{{message.1}}" a>{{message.2}}</a> @ <a href="/c/{{message.4}}" a>{{message.3.0.1}}</a> 
 <br>
-{{message}}
+{{message.0}}
+<br>
+echo: {{message.5}}
 <hr>
 {%endfor%}

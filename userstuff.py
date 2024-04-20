@@ -46,3 +46,9 @@ def findadudebyid(id):
         return user
     else:
         return None
+    
+def echosum(username):
+    uid = findadude(username)[0]
+    sql = text("SELECT SUM(echo) FROM messages where user_id=:user_id")
+    result = db.session.execute(sql, {"user_id":uid}).fetchone()
+    return result

@@ -112,7 +112,7 @@ def thread(chamber, thread):
     else:
         rawmessages = actions.getmessages(thread)
         thready = actions.openthread(thread)[0]
-        thready = [userstuff.findadudebyid(thready[0]),thready[3],thready[4],thready[5],thready[6].strftime("%Y-%m-%d %H:%M:%S")]
+        thready = [userstuff.findadudebyid(thready[1]),thready[3],thready[4],thready[5],thready[6].strftime("%Y-%m-%d %H:%M:%S")]
         if not rawmessages:
                 return render_template("thread.html", thready = thready, back = chamber)
         messages = []
@@ -120,7 +120,7 @@ def thread(chamber, thread):
             dude = userstuff.findadudebyid(message[1])
             date = message[5].strftime("%Y-%m-%d %H:%M:%S")
             messages.append([message[3],dude[1],message[4],date])
-        return render_template("thread.html", thready = thready, back = chamber, messages=messages, where = "/c/"+chamber+"/"+str(thread))
+        return render_template("thread.html", thready = thready, backl = chamber, back = chamber.replace("_"," "), messages=messages, where = "/c/"+chamber+"/"+str(thread))
     
 @app.route("/p/<user>")
 def profile(user):
@@ -132,6 +132,9 @@ def profile(user):
                 messages = actions.messagehistory(user[0])
             else:
                 messages = []
-            return render_template("profile.html", messages=messages, user=user[1])
+            echo = userstuff.echosum(user[1])[0]
+            if echo == None:
+                echo = 0
+            return render_template("profile.html", messages=messages, user=user, echo = echo)
         else:
             return render_template("error.html", message="User not found", prev="/")

@@ -5,7 +5,8 @@
 <form action="/createchamber">
     <input type="submit" value="Create a new chamber">
 </form>
-<p>Olet kirjautunut nimellä {{ session.username }}</p>
+
+<p>Olet kirjautunut nimellä <a href="/p/{{session.username}}"a> {{session.username}}</a></p>
 <a href="/logout">Log out</a>
 <hr>
 

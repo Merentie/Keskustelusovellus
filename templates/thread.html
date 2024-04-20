@@ -4,14 +4,15 @@
 {{thready.2}}
 <br>
 <br>
-Posted by {{thready.1.1}}
+<a href="/p/{{thready.0.1}}"> Posted by {{thready.0.1}} </a>
+
 <br>
 Posted at {{thready.4}}
 
 <hr>
 {%for message in messages%}
 
-{{message.1}}
+<a href="/p/{{message.1}}">{{message.1}}</a>
 <br>
 <br>
 {{message.0}}
@@ -21,7 +22,6 @@ Posted at {{thready.4}}
 <br>
 Posted at {{message.3}}
 <hr>
-
 
 <br>
 {%endfor%}

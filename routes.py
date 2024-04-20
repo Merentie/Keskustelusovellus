@@ -81,7 +81,7 @@ def chamber(chamber):
         if threads:
             for thread in threads:
                 links[thread[3]] = str("/c/"+chamber+"/"+str(thread[0])).replace(" ","_")
-        return render_template("chamber.html", threadlinks = links, creator = "/c/"+chamber+"/createthread")
+        return render_template("chamber.html", chamber=chamber.replace("_"," "), threadlinks = links, creator = "/c/"+chamber+"/createthread")
 
 @app.route("/c/<chamber>/createthread", methods=["GET","POST"])
 def createthread(chamber):
@@ -122,7 +122,16 @@ def thread(chamber, thread):
             messages.append([message[3],dude[1],message[4],date])
         return render_template("thread.html", thready = thready, back = chamber, messages=messages, where = "/c/"+chamber+"/"+str(thread))
     
-@app.route("/p/<id>")
-def profile(id):
+@app.route("/p/<user>")
+def profile(user):
         if not session:
             return redirect("/")
+        if userstuff.findadude(user):
+            user = userstuff.findadude(user)
+            if actions.messagehistory(user[0]):
+                messages = actions.messagehistory(user[0])
+            else:
+                messages = []
+            return render_template("profile.html", messages=messages, user=user[1])
+        else:
+            return render_template("error.html", message="User not found", prev="/")

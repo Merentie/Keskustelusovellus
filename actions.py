@@ -2,6 +2,7 @@ from db import db
 from sqlalchemy.sql import text
 from werkzeug.security import check_password_hash, generate_password_hash
 
+
 def createchamber(name):
     sql = text("SELECT name FROM chambers WHERE name=:name")
     result = db.session.execute(sql, {"name":name})
@@ -18,7 +19,7 @@ def createthread(uid, cid, title, content):
     sql = text("INSERT INTO threads (user_id, chamber_id, title, content, echo, created_at) VALUES (:user_id, :chamber_id, :title, :content, 0, NOW())")
     db.session.execute(sql, {"user_id":uid, "chamber_id":cid, "title":title, "content":content})
     db.session.commit()
-    return db.session.execute(text("SELECT currval(pg_get_serial_sequence('threads','id'))")).fetchone()
+    return db.session.execute(text("SELECT MAX(id) FROM threads")).fetchone()
 
 def chambercheck(chamber):
     result = db.session.execute(text("SELECT id, name FROM chambers WHERE name=:name"), {"name":chamber.replace("_"," ")}).fetchone()
@@ -53,10 +54,16 @@ def getmessages(id):
     return get
 
 def messagehistory(id):
+    palautus = []
+    
     get = db.session.execute(text("SELECT * FROM messages where user_id=:user_id"),{"user_id":id}).fetchall()
     if not get:
         return
-    return get
+    for message in get:
+        cid = db.session.execute(text("SELECT chamber_id, title FROM threads where id=:id"),{"id":message[2]}).fetchall()
+        chamber = db.session.execute(text("SELECT * FROM chambers where id=:id"),{"id":cid[0][0]}).fetchall()
+        palautus.append((message[3],cid[0][1],chamber))
+    return palautus
 
 def addamessage(uid, tid, message):
     db.session.execute(text("INSERT INTO messages (user_id, thread_id, message, echo, created_at) VALUES (:user_id, :thread_id, :message, 0, NOW())"), {"user_id":uid, "thread_id":tid, "message":message})

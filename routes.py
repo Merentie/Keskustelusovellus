@@ -120,7 +120,10 @@ def thread(chamber, thread):
             dude = userstuff.findadudebyid(message[1])
             date = message[5].strftime("%Y-%m-%d %H:%M:%S")
             messages.append([message[3],dude[1],message[4],date])
-        return render_template("thread.html", thready = thready, backl = chamber, back = chamber.replace("_"," "), messages=messages, where = "/c/"+chamber+"/"+str(thread))
+        if " " in chamber:
+            return render_template("thread.html", thready = thready, backl = chamber, back = chamber.replace("_"," "), messages=messages, where = "/c/"+chamber+"/"+str(thread))
+        else:
+            return render_template("thread.html", thready = thready, backl = chamber, back = chamber, messages=messages, where = "/c/"+chamber+"/"+str(thread))
     
 @app.route("/p/<user>")
 def profile(user):

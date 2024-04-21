@@ -1,11 +1,18 @@
 
-# Toimivat ominaisuudet 07.04.2024:
+# Ominaisuudet 21.04.2024:
 - Voit rekisteröityä, kirjautua sisään ja ulos
 - Voit tehdä kammioita
 - Voit tehdä kammioihin lankoja
 - Voit laittaa lankoihin viestejä
+- Voit selata käyttäjien profiileja, joissa näkyy heidän kommentointihistoria (nykyisessä versiossa profiileissa ei näy tehdyt langat)
 
-# Ohjeet (kopioitu suoraan materiaalista) jotka toivottavasti toimii
+# Suunniteltuja juttuja viimeiseen palautukseen
+- Kaikujärjestelmä
+- Käyttäjän tekemät langat näkyviin profiileissa
+- Ulkoasu
+- Käyn läpi mahdolliset tietoturvajutut
+
+# Ohjeet (kopioitu suoraan materiaalista), jotka toivottavasti toimii
 Kloonaa tämä repositorio omalle koneellesi ja siirry sen juurikansioon. Luo kansioon .env-tiedosto ja määritä sen sisältö seuraavanlaiseksi:
 - DATABASE_URL= sun tietokannan-paikallinen-osoite
 - SECRET_KEY= sun salainen-avain

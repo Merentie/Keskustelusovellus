@@ -28,7 +28,7 @@ def register():
             return render_template("register.html", error="Username must be at least 3 characters long")
         for char in username.lower():
             if char not in "abcdefghijklmnopqrstuvwxyz1234567890":
-                return render_template("register.html", error="Username can only contain letters and numbers")
+                return render_template("register.html", error="Username can only contain letters (of the english alphabet) and numbers")
         password = request.form["password"]
         if len(password) < 1:
             return render_template("register.html", error="Password must be at least 1 character long")
@@ -80,7 +80,8 @@ def createchamber():
             return render_template("createchamber.html", error="Chamber already exists")
     else:
         return render_template("createchamber.html")
-    
+
+#Shows a list of threads within an existing chamber
 @app.route("/c/<chamber>/")
 def chamber(chamber):
     if not session:
@@ -95,6 +96,7 @@ def chamber(chamber):
                 links[thread[3]] = str("/c/"+chamber+"/"+str(thread[0])).replace(" ","_")
         return render_template("chamber.html", chamber=chamber.replace("_"," "), threadlinks = links, creator = "/c/"+chamber+"/createthread")
 
+#Allows user to create a thread
 @app.route("/c/<chamber>/createthread", methods=["GET","POST"])
 def createthread(chamber):
     if not session:
@@ -113,6 +115,7 @@ def createthread(chamber):
     else:
         return render_template("createthread.html", where = "/c/"+chamber+"/createthread", back = [chamber.replace("_"," "), "/c/"+chamber])
     
+#Shows the contents of a thread 
 @app.route("/c/<chamber>/<thread>", methods=["GET","POST"])
 def thread(chamber, thread):
     if not session:
@@ -136,7 +139,8 @@ def thread(chamber, thread):
             return render_template("thread.html", thready = thready, back = chamber, formback = chamber.replace("_"," "), messages=messages, where = "/c/"+chamber+"/"+str(thread))
         else:
             return render_template("thread.html", thready = thready, back = chamber, formback = chamber.replace("_"," "), messages=messages, where = "/c/"+chamber+"/"+str(thread))
-    
+
+#Shows the message history and will later show the total echo of the user when the echo system is actually implemented 
 @app.route("/p/<user>")
 def profile(user):
         if not session:

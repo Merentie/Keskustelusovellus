@@ -28,3 +28,8 @@ CREATE TABLE messages (
     created_at TIMESTAMP
 );
 
+CREATE TABLE heresy (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER,
+    counts INTEGER
+)

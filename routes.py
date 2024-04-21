@@ -70,9 +70,9 @@ def createchamber():
         return redirect("/")
     if request.method == "POST":
         name = request.form["name"]
-        for kohta in ["/","_","-"]:
+        for kohta in ["/","_"]:
             if kohta in name:
-                return render_template("createchamber.html", error="Invalid character")
+                return render_template("createchamber.html", error=f"Invalid character '{kohta}'")
         chamber = actions.createchamber(name)
         if chamber:
             return redirect("/")

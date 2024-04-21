@@ -24,7 +24,14 @@ def register():
         
     else:
         username = request.form["username"]
+        if len(username) < 3:
+            return render_template("register.html", error="Username must be at least 3 characters long")
+        for char in username.lower():
+            if char not in "abcdefghijklmnopqrstuvwxyz1234567890":
+                return render_template("register.html", error="Username can only contain letters and numbers")
         password = request.form["password"]
+        if len(password) < 1:
+            return render_template("register.html", error="Password must be at least 1 character long")
         user = userstuff.register(username,password)
         if user:
             session["username"] = username
@@ -40,6 +47,8 @@ def login():
         return redirect("/")
 
     username = request.form["username"]
+    if len(username) < 3:
+            return render_template("index.html", error="Invalid username or password")
     password = request.form["password"]
     user = userstuff.login(username,password)
     if user:
@@ -61,6 +70,9 @@ def createchamber():
         return redirect("/")
     if request.method == "POST":
         name = request.form["name"]
+        for kohta in ["/","_","-"]:
+            if kohta in name:
+                return render_template("createchamber.html", error="Invalid character")
         chamber = actions.createchamber(name)
         if chamber:
             return redirect("/")

@@ -126,16 +126,16 @@ def thread(chamber, thread):
         thready = actions.openthread(thread)[0]
         thready = [userstuff.findadudebyid(thready[1]),thready[3],thready[4],thready[5],thready[6].strftime("%Y-%m-%d %H:%M:%S")]
         if not rawmessages:
-                return render_template("thread.html", thready = thready, back = chamber)
+                return render_template("thread.html", thready = thready, back = chamber, formback = chamber.replace("_"," "))
         messages = []
         for message in rawmessages:
             dude = userstuff.findadudebyid(message[1])
             date = message[5].strftime("%Y-%m-%d %H:%M:%S")
             messages.append([message[3],dude[1],message[4],date])
         if " " in chamber:
-            return render_template("thread.html", thready = thready, backl = chamber, back = chamber.replace("_"," "), messages=messages, where = "/c/"+chamber+"/"+str(thread))
+            return render_template("thread.html", thready = thready, back = chamber, formback = chamber.replace("_"," "), messages=messages, where = "/c/"+chamber+"/"+str(thread))
         else:
-            return render_template("thread.html", thready = thready, backl = chamber, back = chamber, messages=messages, where = "/c/"+chamber+"/"+str(thread))
+            return render_template("thread.html", thready = thready, back = chamber, formback = chamber.replace("_"," "), messages=messages, where = "/c/"+chamber+"/"+str(thread))
     
 @app.route("/p/<user>")
 def profile(user):

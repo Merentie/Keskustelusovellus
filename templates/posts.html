@@ -1,0 +1,10 @@
+<a href="/" ><h1>Echo Chamber</h1> </a>
+<h2>{{user.1}}</h2>
+<h4>Echo: {{echo}}</h4>
+<b>Threads</b> <a href="/p/{{user.1}}/messages">Messages</a>
+<hr>
+{%for post in posts%}
+<a href="/c/{{post.4}}/{{post.0}}">{{post.1}}</a> @ <a href="/c/{{post.4}}/"> {{post.3}}</a> <br>
+{{post.2}} echo
+<hr>
+{%endfor%}

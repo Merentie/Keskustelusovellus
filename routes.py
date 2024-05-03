@@ -19,7 +19,6 @@ def register():
     if session:
             return redirect("/")
     if request.method == "GET":
-        
         return render_template("register.html")
         
     else:
@@ -70,7 +69,7 @@ def createchamber():
         return redirect("/")
     if request.method == "POST":
         name = request.form["name"]
-        for kohta in ["/","_"]:
+        for kohta in ["/","_","?","'\'"]:
             if kohta in name:
                 return render_template("createchamber.html", error=f"Invalid character '{kohta}'")
         chamber = actions.createchamber(name)
@@ -140,20 +139,46 @@ def thread(chamber, thread):
         else:
             return render_template("thread.html", thready = thready, back = chamber, formback = chamber.replace("_"," "), messages=messages, where = "/c/"+chamber+"/"+str(thread))
 
-#Shows the message history and will later show the total echo of the user when the echo system is actually implemented 
-@app.route("/p/<user>")
+# Shows the message history and will later show the total echo of the user when the echo system is actually implemented 
+@app.route("/p/<user>/")
 def profile(user):
         if not session:
             return redirect("/")
         if userstuff.findadude(user):
-            user = userstuff.findadude(user)
-            if actions.messagehistory(user[0]):
-                messages = actions.messagehistory(user[0])
-            else:
-                messages = []
-            echo = userstuff.echosum(user[1])[0]
-            if echo == None:
-                echo = 0
-            return render_template("profile.html", messages=messages, user=user, echo = echo)
+            return redirect("/p/"+user+"/threads")
         else:
             return render_template("error.html", message="User not found", prev="/")
+        
+@app.route("/p/<user>/messages")
+def profilemessages(user):
+    if not session:
+        return redirect("/")
+    if userstuff.findadude(user):
+        user = userstuff.findadude(user)
+        if actions.messagehistory(user[0]):
+            messages = actions.messagehistory(user[0])
+        else:
+            messages = []
+        echo = userstuff.echosum(user[1])[0]
+        if echo == None:
+            echo = 0
+        return render_template("messages.html", messages=messages, user=user, echo = echo)
+    else:
+        return render_template("error.html", message="User not found", prev="/")
+    
+@app.route("/p/<user>/threads")
+def profileposts(user):
+    if not session:
+        return redirect("/")
+    if userstuff.findadude(user):
+        user = userstuff.findadude(user)
+        if actions.posthistory(user[0]):
+            posts = actions.posthistory(user[0])
+        else:
+            posts = []
+        echo = userstuff.echosum(user[1])[0]
+        if echo == None:
+            echo = 0
+        return render_template("posts.html", posts = posts, user=user, echo = echo)
+    else:
+        return render_template("error.html", message="User not found", prev="/")

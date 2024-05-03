@@ -54,17 +54,27 @@ def getmessages(id):
     return get
 
 def messagehistory(id):
-    palautus = []
-    get = db.session.execute(text("SELECT * FROM messages where user_id=:user_id"),{"user_id":id}).fetchall()
+    history = []
+    get = db.session.execute(text("SELECT * FROM messages where user_id=:user_id group by id order by id desc"),{"user_id":id}).fetchall()
     if not get:
         return
     for message in get:
         cid = db.session.execute(text("SELECT chamber_id, id, title FROM threads where id=:id"),{"id":message[2]}).fetchall()
         chamber = db.session.execute(text("SELECT * FROM chambers where id=:id"),{"id":cid[0][0]}).fetchall()
-        palautus.append((message[3],cid[0][1],cid[0][2],chamber,chamber[0][1].replace(" ","_"),message[4]))
-    return palautus
+        history.append((message[3],cid[0][1],cid[0][2],chamber,chamber[0][1].replace(" ","_"),message[4]))
+    return history
 
 def addamessage(uid, tid, message):
     db.session.execute(text("INSERT INTO messages (user_id, thread_id, message, echo, created_at) VALUES (:user_id, :thread_id, :message, 0, NOW())"), {"user_id":uid, "thread_id":tid, "message":message})
     db.session.commit()
 
+
+def posthistory(id):
+    history = []
+    get = db.session.execute(text("SELECT * FROM threads where user_id=:user_id group by id order by id desc"),{"user_id":id}).fetchall()
+    if not get:
+        return
+    for post in get:
+        chamber = db.session.execute(text("SELECT * FROM chambers where id=:id"),{"id":post[2]}).fetchall()
+        history.append((post[0],post[3],post[5],chamber[0][1],chamber[0][1].replace(" ","_")))
+    return history

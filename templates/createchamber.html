@@ -3,6 +3,7 @@
     Create a new chamber: <br>
     <input type="text" name="name"></p>
     <input type="submit" value="Submit">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 {% if error %}
 <p class=error><span style="color:red">{{ error }}</span>

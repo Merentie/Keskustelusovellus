@@ -1,11 +1,12 @@
+
 <a href="/" ><h1>Echo Chamber</h1> </a> 
 <a href="/c/{{back}}" > <h3>{{formback}}</h3> </a>
 <h2>{{thready.1}}</h2>
+<p style="white-space: pre-line">{{thready.2}}</p>
 
-{{thready.2}}
 <br>
 <br>
-<a href="/p/{{thready.0.1}}"> Posted by {{thready.0.1}} </a>
+Posted by <a href="/p/{{thready.0.1}}"> {{thready.0.1}} </a>
 
 <br>
 Posted at {{thready.4}}
@@ -16,10 +17,12 @@ Posted at {{thready.4}}
 <a href="/p/{{message.1}}">{{message.1}}</a>
 <br>
 <br>
-{{message.0}}
+<p style="white-space: pre-line">{{message.0}}</p>
 <br>
 <br>
-{{message.2}} echo
+<span id = "echo">{{message.2}}</span> echo
+<button onclick = "increase('{{message.2}}')">+</button> <button onclick = "decrease('{{message.2}}')">-</button>
+
 <br>
 Posted at {{message.3}}
 <hr>
@@ -29,4 +32,20 @@ Posted at {{message.3}}
     <h3>Post a message:</h3> <br>
     <textarea name="message" cols="30" rows="10"></textarea><br><br>
     <input type="submit" value="Submit">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
+<!-- 
+<script>
+        var value = 0
+    function increase() {
+        value++;
+        document.getElementById("echo").innerText = value;
+    }
+
+    
+        var value = 0
+    function decrease() {
+        value--;
+        document.getElementById("echo").innerText = value;
+    }
+</script> -->

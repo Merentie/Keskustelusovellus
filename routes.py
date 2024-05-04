@@ -3,6 +3,7 @@ from flask import redirect, render_template, request, session, flash
 import actions
 import userstuff
 from datetime import datetime
+import secrets
 
 #Frontpage
 @app.route("/")
@@ -34,6 +35,7 @@ def register():
         user = userstuff.register(username,password)
         if user:
             session["username"] = username
+            session["csrf_token"] = secrets.token_hex(16)
             return redirect("/")
         else:
             return render_template("register.html", error="User already exists")
@@ -52,6 +54,7 @@ def login():
     user = userstuff.login(username,password)
     if user:
         session["username"] = username
+        session["csrf_token"] = secrets.token_hex(16)
         return redirect("/")
     else:
         return render_template("index.html", error="Invalid username or password", chamberlinks = {})
@@ -60,6 +63,7 @@ def login():
 @app.route("/logout")
 def logout():
     del session["username"]
+    del session["csrf_token"]
     return redirect("/")
 
 #Allows user to make a new chamber
@@ -68,6 +72,8 @@ def createchamber():
     if not session:
         return redirect("/")
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            return render_template("error.html", message="Invalid CSRF token", prev="/")
         name = request.form["name"]
         for kohta in ["/","_","?","'\'"]:
             if kohta in name:
@@ -101,6 +107,8 @@ def createthread(chamber):
     if not session:
         return redirect("/")
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            return render_template("error.html", message="Invalid CSRF token", prev="/")
         if not actions.chambercheck(chamber):
             return render_template("error.html", message=f"chamber '{chamber}' not found", prev="/")
         chamberid = actions.chambercheck(chamber)[0]
@@ -120,6 +128,8 @@ def thread(chamber, thread):
     if not session:
         return redirect("/")
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            return render_template("error.html", message="Invalid CSRF token", prev="/")
         user = userstuff.findadude(session["username"])
         actions.addamessage(user[0],thread,request.form["message"])
         return redirect(f"/c/{chamber}/{thread}")

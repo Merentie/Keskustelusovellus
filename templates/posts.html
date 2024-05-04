@@ -5,6 +5,20 @@
 <hr>
 {%for post in posts%}
 <a href="/c/{{post.4}}/{{post.0}}">{{post.1}}</a> @ <a href="/c/{{post.4}}/"> {{post.3}}</a> <br>
+<!-- <button onclick=""></button>
+<div id="cont" style="display: none;">{{post.5}}</div> -->
 {{post.2}} echo
 <hr>
 {%endfor%}
+
+<!-- <script>
+    const element = document.getElementById("cont");
+    element.addEventListener("click", expand());
+    function expand() {
+        if (element.style.display === "none") {
+        element.style.display = "block";
+    }   else {
+        element.style.display = "none";
+  }
+    }
+</script> -->

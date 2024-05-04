@@ -1,0 +1,12 @@
+body {
+    margin: auto;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    background-color: #dbdbdb;
+    text-align: start;
+}
+
+
+a {
+    color: rgb(1, 102, 184);
+    text-decoration: none;
+}

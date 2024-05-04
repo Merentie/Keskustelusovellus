@@ -1,4 +1,4 @@
-
+<link rel="stylesheet" href="/static/main.css">
 <a href="/" ><h1>Echo Chamber</h1> </a> 
 <a href="/c/{{back}}" > <h3>{{formback}}</h3> </a>
 <h2>{{thready.1}}</h2>
@@ -34,9 +34,9 @@ Posted at {{message.3}}
     <input type="submit" value="Submit">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
-<!-- 
+
 <script>
-        var value = 0
+        var value = {}
     function increase() {
         value++;
         document.getElementById("echo").innerText = value;
@@ -48,4 +48,4 @@ Posted at {{message.3}}
         value--;
         document.getElementById("echo").innerText = value;
     }
-</script> -->
+</script>

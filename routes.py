@@ -1,5 +1,5 @@
 from app import app
-from flask import redirect, render_template, request, session, flash
+from flask import redirect, render_template, request, session, flash, abort
 import actions
 import userstuff
 from datetime import datetime
@@ -73,7 +73,7 @@ def createchamber():
         return redirect("/")
     if request.method == "POST":
         if session["csrf_token"] != request.form["csrf_token"]:
-            return render_template("error.html", message="Invalid CSRF token", prev="/")
+            abort(403)
         name = request.form["name"]
         for kohta in ["/","_","?","'\'"]:
             if kohta in name:
@@ -108,7 +108,7 @@ def createthread(chamber):
         return redirect("/")
     if request.method == "POST":
         if session["csrf_token"] != request.form["csrf_token"]:
-            return render_template("error.html", message="Invalid CSRF token", prev="/")
+            abort(403)
         if not actions.chambercheck(chamber):
             return render_template("error.html", message=f"chamber '{chamber}' not found", prev="/")
         chamberid = actions.chambercheck(chamber)[0]
@@ -129,7 +129,7 @@ def thread(chamber, thread):
         return redirect("/")
     if request.method == "POST":
         if session["csrf_token"] != request.form["csrf_token"]:
-            return render_template("error.html", message="Invalid CSRF token", prev="/")
+            abort(403)
         user = userstuff.findadude(session["username"])
         actions.addamessage(user[0],thread,request.form["message"])
         return redirect(f"/c/{chamber}/{thread}")

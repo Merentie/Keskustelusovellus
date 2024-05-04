@@ -76,5 +76,5 @@ def posthistory(id):
         return
     for post in get:
         chamber = db.session.execute(text("SELECT * FROM chambers where id=:id"),{"id":post[2]}).fetchall()
-        history.append((post[0],post[3],post[5],chamber[0][1],chamber[0][1].replace(" ","_")))
+        history.append((post[0],post[3],post[5],chamber[0][1],chamber[0][1].replace(" ","_"),post[4]))
     return history

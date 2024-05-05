@@ -5,7 +5,7 @@
 - Voit tehdä kammioihin lankoja
 - Voit laittaa lankoihin viestejä
 - Voit selata käyttäjien profiileja, joissa näkyy heidän kommentointi/lankahistoria
-- Viesteillä ja langoilla on "kaiut", joita käyttäjät voivat koventaa tai hiljentää. Jos langan tai kommentin kaiku laskee alle -4, lanka/kommentti poistetaan.
+- Viesteillä ja langoilla on "kaiut", joita käyttäjät voivat koventaa tai hiljentää. Jos langan tai kommentin kaiku laskee alle -4, lanka/kommentti poistetaan. Kaiun äänestämiseen ei ole rajaa, koska se tekee testaamisesta helpompaa
 - Käyttäjien profiileissa näkyy käyttäjien yhteenlaskettu kaikumäärä ja "harhaoppi"-laskuri, joka pitää kirjaa poistetuista viesteistä/langoista
 
 # Ohjeet (kopioitu suoraan materiaalista), jotka toivottavasti toimii

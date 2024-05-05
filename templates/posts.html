@@ -1,7 +1,8 @@
 <link rel="stylesheet" href="/static/main.css">
 <a href="/" ><h1>Echo Chamber</h1> </a>
 <h2>{{user.1}}</h2>
-<h4>Echo: {{echo}}</h4>
+<h4>Echo: {{echo.0}}</h4>
+<h4>Heresy: {{echo.1}} </h4>
 <b>Threads</b> <a href="/p/{{user.1}}/messages">Messages</a>
 <hr>
 {%for post in posts%}

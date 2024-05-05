@@ -4,8 +4,13 @@
 
 <h2>{{thready.1}}</h2>
 <p style="white-space: pre-line">{{thready.2}}</p>
+<form action = "{{where}}" method = "POST">
+{{thready.3}} echo <button type="sumbit" name="value" value="+">+</button> <button type="submit" name="value" value="-">-</button>
+<input type="hidden" name="mid" value="{{thready.5}}">
+<input type="hidden" name="type" value="post"> <br> 
+</form>
 Posted by <a href="/p/{{thready.0.1}}"> {{thready.0.1}} </a>
-
+{{thready}}
 <br>
 Posted at {{thready.4}}
 
@@ -18,6 +23,7 @@ Posted at {{thready.4}}
 <form action = "{{where}}" method = "POST">
 {{message.2}} echo <button type="sumbit" name="value" value="+">+</button> <button type="submit" name="value" value="-">-</button>
 <input type="hidden" name="mid" value="{{message.4}}">
+<input type="hidden" name="type" value="message">
 </form>
 <br>
 Posted at {{message.3}}

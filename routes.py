@@ -136,12 +136,12 @@ def thread(chamber, thread):
         actions.addamessage(user[0],thread,request.form["message"])
         return redirect(f"/c/{chamber}/{thread}")
     if request.method == "POST" and "value" in request.form:
-        actions.vote(request.form["mid"],request.form["value"])
+        actions.vote(request.form["mid"],request.form["value"],request.form["type"])
         return redirect(f"/c/{chamber}/{thread}")
     else:
         rawmessages = actions.getmessages(thread)
         thready = actions.openthread(thread)[0]
-        thready = [userstuff.findadudebyid(thready[1]),thready[3],thready[4],thready[5],thready[6].strftime("%Y-%m-%d %H:%M:%S")]
+        thready = [userstuff.findadudebyid(thready[1]),thready[3],thready[4],thready[5],thready[6].strftime("%Y-%m-%d %H:%M:%S"),thready[0]]
         if not rawmessages:
                 return render_template("thread.html", thready = thready, back = chamber, formback = chamber.replace("_"," "))
         messages = []
@@ -191,7 +191,7 @@ def profileposts(user):
             posts = actions.posthistory(user[0])
         else:
             posts = []
-        echo = userstuff.echosum(user[1])[0]
+        echo = userstuff.echosum(user[1])
         if echo == None:
             echo = 0
         return render_template("posts.html", posts = posts, user=user, echo = echo)

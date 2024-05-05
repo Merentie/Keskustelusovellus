@@ -1,16 +1,12 @@
 
-# Ominaisuudet 21.04.2024:
+# Ominaisuudet 05.05.2024:
 - Voit rekisteröityä, kirjautua sisään ja ulos
 - Voit tehdä kammioita
 - Voit tehdä kammioihin lankoja
 - Voit laittaa lankoihin viestejä
-- Voit selata käyttäjien profiileja, joissa näkyy heidän kommentointihistoria (nykyisessä versiossa profiileissa ei näy tehdyt langat)
-
-# Suunniteltuja juttuja viimeiseen palautukseen
-- Kaikujärjestelmä
-- Käyttäjän tekemät langat näkyviin profiileissa
-- Ulkoasu
-- Käyn läpi mahdolliset tietoturvajutut
+- Voit selata käyttäjien profiileja, joissa näkyy heidän kommentointi/lankahistoria
+- Viesteillä ja langoilla on "kaiut", joita käyttäjät voivat koventaa tai hiljentää. Jos langan tai kommentin kaiku laskee alle -4, lanka/kommentti poistetaan.
+- Käyttäjien profiileissa näkyy käyttäjien yhteenlaskettu kaikumäärä ja "harhaoppi"-laskuri, joka pitää kirjaa poistetuista viesteistä/langoista
 
 # Ohjeet (kopioitu suoraan materiaalista), jotka toivottavasti toimii
 Kloonaa tämä repositorio omalle koneellesi ja siirry sen juurikansioon. Luo kansioon .env-tiedosto ja määritä sen sisältö seuraavanlaiseksi:
@@ -33,9 +29,4 @@ Nyt voit käynnistää sovelluksen komennolla
 
 # Keskustelusovellus
 
-Sovelluksessa näkyy keskustelualueita, joista jokaisella on tietty aihe. Alueilla on keskusteluketjuja, jotka muodostuvat viesteistä. Keskustelualueet ovat käyttäjien luomia "kaikukammioita", joihin muihin käyttäjät voivat luoda ketjuja. Jokaisella ketjun viestillä on "kaiku", jota muut käyttäjät voivat lujentaa tai hiljentää. Jos viestiä hiljennetään tarpeeksi, se poistetaan. Jos käyttäjän viestejä ollaan poistettu kammiosta tarpeeksi monta kertaa, hän menettää pääsyoikeuden kammioon. Sivulla ei ole ylläpitoa lainkaan, sen sijaan kaiken moderoinnin hoitavat kammioissa olevat käyttäjät. 
-
-Mahdollisia ominaisuuksia:
-- Kaikujen hiljentäminen on resurssi, jota saa kommentoimalla/saamalla kaikuja
-- Viestin kaiun lisääntyessä viestin fontti kasvaa tai jotain vastaavaa
-- Jos käyttäjä on saanut tarpeeksi monta porttikieltoa eri kammioista, saa hän porttikiellon koko sovellukseen.
+Sovelluksessa näkyy keskustelualueita, joista jokaisella on tietty aihe. Alueilla on keskusteluketjuja, jotka muodostuvat viesteistä. Keskustelualueet ovat käyttäjien luomia "kaikukammioita", joihin muihin käyttäjät voivat luoda ketjuja. Jokaisella ketjun viestillä on "kaiku", jota muut käyttäjät voivat lujentaa tai hiljentää. Jos viestiä hiljennetään tarpeeksi, se poistetaan. Sivulla ei ole ylläpitoa lainkaan, sen sijaan kaiken moderoinnin hoitavat kammioissa olevat käyttäjät. 

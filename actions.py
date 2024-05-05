@@ -41,6 +41,13 @@ def getthreads(chamber):
     get = db.session.execute(text("SELECT * FROM threads WHERE chamber_id=:chamber_id"),{"chamber_id":id}).fetchall()
     return get
 
+def count(type,id):
+    if type == "threads":
+        cid = db.session.execute(text("SELECT id FROM chambers WHERE name=:name"),{"name":id}).fetchone()
+        return db.session.execute(text("SELECT COUNT(*) FROM threads WHERE chamber_id=:chamber_id"),{"chamber_id":cid}).fetchone()[0]
+    if type == "messages":
+        return db.session.execute(text("SELECT COUNT(*) FROM messages WHERE thread_id=:thread_id AND echo > -5"),{"thread_id":id}).fetchone()[0]
+
 def openthread(id):
     get = db.session.execute(text("SELECT * FROM threads WHERE id=:id"),{"id":id}).fetchall()
     if not get:
@@ -48,7 +55,7 @@ def openthread(id):
     return get
 
 def getmessages(id):
-    get = db.session.execute(text("SELECT * FROM messages where thread_id=:thread_id"),{"thread_id":id}).fetchall()
+    get = db.session.execute(text("SELECT * FROM messages where thread_id=:thread_id and echo > -5 group by id order by id"),{"thread_id":id}).fetchall()
     if not get:
         return
     return get
@@ -78,3 +85,21 @@ def posthistory(id):
         chamber = db.session.execute(text("SELECT * FROM chambers where id=:id"),{"id":post[2]}).fetchall()
         history.append((post[0],post[3],post[5],chamber[0][1],chamber[0][1].replace(" ","_"),post[4]))
     return history
+
+def vote(id,value):
+    if value == "+":
+        db.session.execute(text("UPDATE messages SET echo=echo+1 WHERE id=:id"),{"id":id})
+        db.session.commit()
+    if value == "-":
+        db.session.execute(text("UPDATE messages SET echo=echo-1 WHERE id=:id"),{"id":id})
+        db.session.commit()
+        check = db.session.execute(text("SELECT user_id, echo FROM messages WHERE id=:id"),{"id":id}).fetchall()[0]
+        if check[1] < -4:
+            if db.session.execute(text("SELECT * FROM heresy where user_id=:user_id"),{"user_id":check[0]}).fetchone():
+                db.session.execute(text("UPDATE heresy SET counts=counts+1 WHERE user_id=:user_id"),{"user_id":check[0]})
+                db.session.commit()
+                if db.session.execute(text("SELECT counts FROM heresy where user_id=:user_id"),{"user_id":check[0]}).fetchone()[0] > 3:
+                    pass
+            else:
+                db.session.execute(text("INSERT INTO heresy (user_id, counts) VALUES (:user_id, 1)"),{"user_id":check[0]})
+                db.session.commit()

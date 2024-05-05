@@ -75,7 +75,9 @@ def createchamber():
         if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
         name = request.form["name"]
-        for kohta in ["/","_","?","'\'"]:
+        if name == "":
+            return render_template("createchamber.html", error="Chamber name can't be empty") 
+        for kohta in ["/","_","?","\\"]:
             if kohta in name:
                 return render_template("createchamber.html", error=f"Invalid character '{kohta}'")
         chamber = actions.createchamber(name)
@@ -98,7 +100,7 @@ def chamber(chamber):
         links = {}
         if threads:
             for thread in threads:
-                links[thread[3]] = str("/c/"+chamber+"/"+str(thread[0])).replace(" ","_")
+                links[thread[3]] = (str("/c/"+chamber+"/"+str(thread[0])).replace(" ","_"),actions.count("messages",thread[0]),thread[5])
         return render_template("chamber.html", chamber=chamber.replace("_"," "), threadlinks = links, creator = "/c/"+chamber+"/createthread")
 
 #Allows user to create a thread
@@ -127,11 +129,14 @@ def createthread(chamber):
 def thread(chamber, thread):
     if not session:
         return redirect("/")
-    if request.method == "POST":
+    if request.method == "POST" and "message" in request.form:
         if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
         user = userstuff.findadude(session["username"])
         actions.addamessage(user[0],thread,request.form["message"])
+        return redirect(f"/c/{chamber}/{thread}")
+    if request.method == "POST" and "value" in request.form:
+        actions.vote(request.form["mid"],request.form["value"])
         return redirect(f"/c/{chamber}/{thread}")
     else:
         rawmessages = actions.getmessages(thread)
@@ -143,7 +148,7 @@ def thread(chamber, thread):
         for message in rawmessages:
             dude = userstuff.findadudebyid(message[1])
             date = message[5].strftime("%Y-%m-%d %H:%M:%S")
-            messages.append([message[3],dude[1],message[4],date])
+            messages.append([message[3],dude[1],message[4],date,message[0]])
         if " " in chamber:
             return render_template("thread.html", thready = thready, back = chamber, formback = chamber.replace("_"," "), messages=messages, where = "/c/"+chamber+"/"+str(thread))
         else:

@@ -1,14 +1,24 @@
 body {
     margin: auto;
     font-family: 'Helvetica', 'Arial', sans-serif;
-    background-color: #aaabad;
+    background-color: #4b5d63;
     text-align: start;
     max-width: 80em;
+    margin-top: 2em;
 }
 
 
 a {
-    color: rgb(5, 96, 138);
+    color: rgb(202, 131, 0);
     text-decoration: none;
 }
 
+textarea {
+    background-color: rgb(145, 142, 138);
+    border: #5f5f69;
+}
+
+input {
+    background-color: #d4a05b;
+    border: #000;
+}

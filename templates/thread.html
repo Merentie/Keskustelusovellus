@@ -15,7 +15,10 @@ Posted at {{thready.4}}
 <a href="/p/{{message.1}}">{{message.1}}</a>
 <br>
 <p style="white-space: pre-line">{{message.0}}</p>
-{{message.2}} echo
+<form action = "{{where}}" method = "POST">
+{{message.2}} echo <button type="sumbit" name="value" value="+">+</button> <button type="submit" name="value" value="-">-</button>
+<input type="hidden" name="mid" value="{{message.4}}">
+</form>
 <br>
 Posted at {{message.3}}
 <hr>
@@ -29,3 +32,9 @@ Posted at {{message.3}}
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 
+<script>
+    function vote(value){
+        a = document.getElementById(value);
+        a.style.display = "none"
+    }
+</script>

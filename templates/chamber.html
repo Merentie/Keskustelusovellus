@@ -7,7 +7,9 @@
 
 {% for name, link in threadlinks.items() %}
 
-<a href="{{link}}">{{name}}</a>
-
+<a href="{{link.0}}">{{name}}</a><br>
+{{link.2}} echo 
+<br>
+{{link.1}} comment(s)
 <hr>
 {% endfor %}

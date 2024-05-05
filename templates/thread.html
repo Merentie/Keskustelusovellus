@@ -1,11 +1,9 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <link rel="stylesheet" href="/static/main.css">
-<a href="/" ><h1>Echo Chamber</h1> </a> 
-<a href="/c/{{back}}" > <h3>{{formback}}</h3> </a>
+<h1><a href="/" >Echo Chamber </a> > <a href="/c/{{back}}" > {{formback}} </a> > {{thready.1}} </h1>
+
 <h2>{{thready.1}}</h2>
 <p style="white-space: pre-line">{{thready.2}}</p>
-
-<br>
-<br>
 Posted by <a href="/p/{{thready.0.1}}"> {{thready.0.1}} </a>
 
 <br>
@@ -16,17 +14,13 @@ Posted at {{thready.4}}
 
 <a href="/p/{{message.1}}">{{message.1}}</a>
 <br>
-<br>
 <p style="white-space: pre-line">{{message.0}}</p>
-<br>
-<br>
-<span id = "echo">{{message.2}}</span> echo
-<button onclick = "increase('{{message.2}}')">+</button> <button onclick = "decrease('{{message.2}}')">-</button>
-
+{{message.2}} echo
 <br>
 Posted at {{message.3}}
 <hr>
 {%endfor%}
+
 
 <form action="{{where}}" method="POST">
     <h3>Post a message:</h3> <br>
@@ -35,17 +29,3 @@ Posted at {{message.3}}
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 
-<script>
-        var value = {}
-    function increase() {
-        value++;
-        document.getElementById("echo").innerText = value;
-    }
-
-    
-        var value = 0
-    function decrease() {
-        value--;
-        document.getElementById("echo").innerText = value;
-    }
-</script>

@@ -1,12 +1,14 @@
 body {
     margin: auto;
     font-family: 'Helvetica', 'Arial', sans-serif;
-    background-color: #dbdbdb;
+    background-color: #aaabad;
     text-align: start;
+    max-width: 80em;
 }
 
 
 a {
-    color: rgb(1, 102, 184);
+    color: rgb(5, 96, 138);
     text-decoration: none;
 }
+
